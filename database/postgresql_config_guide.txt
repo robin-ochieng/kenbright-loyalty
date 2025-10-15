@@ -1,0 +1,20 @@
+# Kenbright 360 - PostgreSQL Configuration Guide
+
+## Connection Pooling Settings
+Edit postgresql.conf (usually in C:\Program Files\PostgreSQL\18\data\postgresql.conf):
+
+max_connections = 200
+shared_buffers = 256MB
+effective_cache_size = 1GB
+work_mem = 4MB
+maintenance_work_mem = 64MB
+
+## Backup Settings
+wal_level = replica
+archive_mode = on
+archive_command = 'copy "%p" "C:\kenbright_backups\%f"'
+max_wal_senders = 3
+
+## After editing, restart PostgreSQL service:
+# net stop postgresql-x64-18
+# net start postgresql-x64-18
