@@ -128,27 +128,62 @@ export default function Register() {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Paper elevation={3} sx={{ p: 4, width: '100%', borderRadius: 2 }}>
-          <Typography component="h1" variant="h5" align="center" gutterBottom>
+    <Box 
+      sx={{ 
+        minHeight: '100vh', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        backgroundColor: '#f5f7fa',
+        py: 4
+      }}
+    >
+      <Container component="main" maxWidth="sm">
+        <Paper 
+          elevation={4} 
+          sx={{ 
+            p: { xs: 3, sm: 4, md: 5 }, 
+            width: '100%', 
+            borderRadius: 3,
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
+          }}
+        >
+          {/* Logo */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+            <Box
+              component="img"
+              src="/Kenbright 360 Logo.png"
+              alt="Kenbright 360"
+              sx={{ 
+                height: 55,
+                maxWidth: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </Box>
+
+          <Typography 
+            component="h1" 
+            variant="h5" 
+            align="center" 
+            gutterBottom
+            sx={{ fontWeight: 600, color: '#333' }}
+          >
             Create Account
           </Typography>
-          <Typography component="h2" variant="body1" align="center" color="textSecondary" gutterBottom>
-            Join Kenbright 360 Loyalty Program
+          <Typography 
+            variant="body1" 
+            align="center" 
+            color="text.secondary" 
+            sx={{ mb: 3 }}
+          >
+            Join the Kenbright 360 Loyalty Program
           </Typography>
 
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
           {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
-          <Box component="form" onSubmit={handleRegister} sx={{ mt: 3 }}>
+          <Box component="form" onSubmit={handleRegister} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -160,6 +195,7 @@ export default function Register() {
                   autoComplete="given-name"
                   value={formData.firstName}
                   onChange={handleChange}
+                  size="medium"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -172,6 +208,7 @@ export default function Register() {
                   autoComplete="family-name"
                   value={formData.lastName}
                   onChange={handleChange}
+                  size="medium"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -183,6 +220,7 @@ export default function Register() {
                   name="nationalId"
                   value={formData.nationalId}
                   onChange={handleChange}
+                  size="medium"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -196,6 +234,7 @@ export default function Register() {
                   placeholder="+254700000000"
                   value={formData.phoneNumber}
                   onChange={handleChange}
+                  size="medium"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -209,6 +248,7 @@ export default function Register() {
                   InputLabelProps={{ shrink: true }}
                   value={formData.dateOfBirth}
                   onChange={handleChange}
+                  size="medium"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -221,6 +261,7 @@ export default function Register() {
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
+                  size="medium"
                 >
                   <MenuItem value="Male">Male</MenuItem>
                   <MenuItem value="Female">Female</MenuItem>
@@ -237,6 +278,7 @@ export default function Register() {
                   autoComplete="email"
                   value={formData.email}
                   onChange={handleChange}
+                  size="medium"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -251,6 +293,7 @@ export default function Register() {
                   value={formData.password}
                   onChange={handleChange}
                   helperText="Minimum 6 characters"
+                  size="medium"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -263,6 +306,7 @@ export default function Register() {
                   id="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
+                  size="medium"
                 />
               </Grid>
             </Grid>
@@ -271,22 +315,51 @@ export default function Register() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, py: 1.5 }}
+              size="large"
+              sx={{ 
+                mt: 4, 
+                mb: 2, 
+                py: 1.5,
+                fontSize: '1rem',
+                fontWeight: 600,
+                textTransform: 'none',
+                borderRadius: 2
+              }}
               disabled={loading}
             >
-              {loading ? 'Creating Account...' : 'Sign Up'}
+              {loading ? 'Creating Account...' : 'Create Account'}
             </Button>
 
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link component={RouterLink} to="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Link 
+                component={RouterLink} 
+                to="/login" 
+                variant="body2"
+                sx={{ fontWeight: 500 }}
+              >
+                Already have an account? Sign in
+              </Link>
+            </Box>
           </Box>
         </Paper>
-      </Box>
-    </Container>
+        
+        {/* Footer */}
+        <Box sx={{ mt: 3, textAlign: 'center' }}>
+          <Typography 
+            variant="caption" 
+            color="text.secondary" 
+            sx={{ display: 'block' }}
+          >
+            © 2025 KIBL. All rights reserved.
+          </Typography>
+          <Typography 
+            variant="caption" 
+            sx={{ display: 'block', color: '#999999', fontSize: '0.7rem', mt: 0.5 }}
+          >
+            Powered by Kenbright AI
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 }

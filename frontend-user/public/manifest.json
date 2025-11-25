@@ -1,13 +1,19 @@
 {
   "name": "Kenbright 360",
-  "short_name": "Kenbright",
-  "description": "Kenbright Loyalty Rewards Program",
-  "theme_color": "#ffffff",
+  "short_name": "Kenbright 360",
+  "description": "Kenbright 360 - Your Loyalty Rewards Program",
+  "theme_color": "#1976d2",
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
   "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
     {
       "src": "pwa-192x192.png",
       "sizes": "192x192",

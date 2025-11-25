@@ -4,13 +4,18 @@ export interface Redemption {
   redemption_id: number;
   member_id: number;
   reward_id: number;
-  points_redeemed: number;
+  points_spent: number;
+  points_redeemed?: number; // alias for points_spent
   redemption_date: string;
   status: string;
   members?: {
     first_name: string;
     last_name: string;
-    email: string;
+    email_address: string;
+    email?: string; // alias
+  };
+  rewards_catalog?: {
+    reward_name: string;
   };
   reward_catalog?: {
     reward_name: string;
@@ -20,11 +25,11 @@ export interface Redemption {
 export const redemptionService = {
   async getRedemptions() {
     const { data, error } = await supabase
-      .from('points_redemption')
+      .from('points_redemptions')
       .select(`
         *,
-        members (first_name, last_name, email),
-        reward_catalog (reward_name)
+        members (first_name, last_name, email_address),
+        rewards_catalog (reward_name)
       `)
       .order('redemption_date', { ascending: false });
     
@@ -34,7 +39,7 @@ export const redemptionService = {
 
   async updateStatus(id: number, status: string) {
     const { data, error } = await supabase
-      .from('points_redemption')
+      .from('points_redemptions')
       .update({ status })
       .eq('redemption_id', id)
       .select()

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2e7d32"/>
+      <stop offset="100%" style="stop-color:#1b5e20"/>
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff9800"/>
+      <stop offset="100%" style="stop-color:#f57c00"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded background - Green for Admin -->
+  <rect x="2" y="2" width="60" height="60" rx="14" ry="14" fill="url(#bgGradient)"/>
+  
+  <!-- Subtle inner shadow/highlight -->
+  <rect x="4" y="4" width="56" height="56" rx="12" ry="12" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  
+  <!-- Letter K - stylized -->
+  <path d="M 20 16 L 20 48 L 27 48 L 27 35 L 38 48 L 47 48 L 33 32 L 46 16 L 37 16 L 27 29 L 27 16 Z" fill="white"/>
+  
+  <!-- Admin shield/star indicator -->
+  <path d="M 48 12 L 50 16 L 54 16 L 51 19 L 52 23 L 48 21 L 44 23 L 45 19 L 42 16 L 46 16 Z" fill="url(#accentGradient)"/>
+</svg>
