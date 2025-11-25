@@ -5,6 +5,9 @@
 -- Members table with comprehensive KYC
 CREATE TABLE members (
     member_id SERIAL PRIMARY KEY,
+    -- Link to Supabase Auth
+    user_id UUID REFERENCES auth.users,
+    
     national_id VARCHAR(20) UNIQUE NOT NULL,
     phone_number VARCHAR(15) UNIQUE NOT NULL,
     email_address VARCHAR(255) UNIQUE NOT NULL,
@@ -25,7 +28,7 @@ CREATE TABLE members (
     occupation VARCHAR(100),
     
     -- Loyalty Program Fields
-    tier VARCHAR(20) DEFAULT 'Bronze' CHECK (tier IN ('Bronze', 'Silver', 'Gold', 'Platinum')),
+    tier VARCHAR(20) DEFAULT 'BRONZE' CHECK (tier IN ('BRONZE', 'SILVER', 'GOLD', 'PLATINUM')),
     referral_code VARCHAR(50) UNIQUE,
     referred_by_member_id INTEGER REFERENCES members(member_id),
     
@@ -34,6 +37,7 @@ CREATE TABLE members (
     social_provider_id VARCHAR(255),
     email_verified BOOLEAN DEFAULT FALSE,
     avatar_url VARCHAR(500),
+    password_hash VARCHAR(255),
     
     -- Timestamps
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -44,7 +48,7 @@ CREATE TABLE members (
 CREATE TABLE products (
     product_id SERIAL PRIMARY KEY,
     product_name VARCHAR(255) UNIQUE NOT NULL,
-    product_category VARCHAR(20) NOT NULL CHECK (product_category IN ('Core', 'Optional')),
+    product_category VARCHAR(20) NOT NULL CHECK (product_category IN ('CORE', 'OPTIONAL')),
     points_calculation_ratio INTEGER NOT NULL,
     requires_kyc BOOLEAN DEFAULT TRUE,
     description TEXT,
@@ -142,6 +146,39 @@ CREATE TABLE social_logins (
     UNIQUE(provider, provider_user_id)
 );
 
+-- Enable Row Level Security (RLS)
+ALTER TABLE members ENABLE ROW LEVEL SECURITY;
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE member_products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE loyalty_ledger ENABLE ROW LEVEL SECURITY;
+ALTER TABLE rewards_catalog ENABLE ROW LEVEL SECURITY;
+ALTER TABLE points_redemptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE assets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dependents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_logins ENABLE ROW LEVEL SECURITY;
+
+-- Create policies (Basic examples - refine as needed)
+-- Members can view their own profile
+CREATE POLICY "Users can view own profile" ON members
+    FOR SELECT USING (auth.uid() = user_id);
+
+-- Members can update their own profile
+CREATE POLICY "Users can update own profile" ON members
+    FOR UPDATE USING (auth.uid() = user_id);
+
+-- Everyone can view active products
+CREATE POLICY "Public view products" ON products
+    FOR SELECT USING (is_active = true);
+
+-- Members can view their own products
+CREATE POLICY "Users can view own products" ON member_products
+    FOR SELECT USING (
+        member_id IN (
+            SELECT member_id FROM members WHERE user_id = auth.uid()
+        )
+    );
+
 -- Create indexes for performance
 CREATE INDEX idx_members_phone ON members(phone_number);
 CREATE INDEX idx_members_email ON members(email_address);
@@ -154,17 +191,17 @@ CREATE INDEX idx_ledger_date ON loyalty_ledger(transaction_date);
 -- Insert initial products data
 INSERT INTO products (product_name, product_category, points_calculation_ratio, requires_kyc) VALUES
 -- Core Products
-('Motor Insurance', 'Core', 100, true),
-('Medical Insurance', 'Core', 100, true),
-('Home Insurance', 'Core', 100, true),
-('Pension (KIPF)', 'Core', 1000, true),
-('Wekapesa', 'Core', 1000, true),
+('Motor Insurance', 'CORE', 100, true),
+('Medical Insurance', 'CORE', 100, true),
+('Home Insurance', 'CORE', 100, true),
+('Pension (KIPF)', 'CORE', 1000, true),
+('Wekapesa', 'CORE', 1000, true),
 -- Optional Products
-('Travel Insurance', 'Optional', 100, true),
-('Personal Accident', 'Optional', 100, true),
-('Pet Insurance', 'Optional', 100, true),
-('Income Protection', 'Optional', 100, true),
-('Home Office Insurance', 'Optional', 100, true);
+('Travel Insurance', 'OPTIONAL', 100, true),
+('Personal Accident', 'OPTIONAL', 100, true),
+('Pet Insurance', 'OPTIONAL', 100, true),
+('Income Protection', 'OPTIONAL', 100, true),
+('Home Office Insurance', 'OPTIONAL', 100, true);
 
 -- Insert sample rewards
 INSERT INTO rewards_catalog (reward_name, points_cost, description) VALUES
